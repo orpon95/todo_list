@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import UseaxiosPublic from '../UseAxionPublic/UseaxiosPublic';
 import Swal from 'sweetalert2';
+import TodoRow from '../TodoRow/TodoRow';
+import { useQuery } from '@tanstack/react-query';
 // import { withAxios } from 'react-axios';
 
 const Home = () => {
 
     const axiosPublic = UseaxiosPublic()
-    const [datas, setdata] = useState([])
-    console.log(datas, 'datas');
+    // const [datas, setdata] = useState([])
+    // console.log(datas, 'datas');
     const handlesubmit = (e)=>{
-        e.preventDefault()
+        // e.preventDefault()
         const form = e.target
         const list = form.list.value
         console.log(list,"list");
@@ -47,16 +49,34 @@ const Home = () => {
         })
 
 
-        axiosPublic.get("/v1/listsInfo")
-        .then(res => 
-            {
-                setdata(res.data)
+        // axiosPublic.get("/v1/listsInfo")
+        // .then(res => 
+        //     {
+        //         setdata(res.data)
 
-            }
-            )
+        //     }
+        //     )
 
 
     }
+
+    const { data :datas, isLoading, isFetching, isPending, refetch } = useQuery({
+        queryKey: ["listinfo"],
+        queryFn: async () => {
+            const res = await axiosPublic.get('/v1/listsInfo')
+
+
+
+            return await res.data
+        }
+        
+        
+
+
+    })
+    console.log(datas,"datas")
+   
+    
     return (
         <div >
             {/* input div */}
@@ -78,7 +98,7 @@ const Home = () => {
 
                 <div className='border-2 w-[50%] h-full '>
                     {
-                        datas?.map((data)=>{ <p key={data._id} >ki</p> })
+                        datas?.map((data)=> <TodoRow key={data._id} data={data} ></TodoRow> )
                     }
 
 
