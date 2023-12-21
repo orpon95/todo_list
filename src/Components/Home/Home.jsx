@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import UseaxiosPublic from '../UseAxionPublic/UseaxiosPublic';
 import Swal from 'sweetalert2';
+// import { withAxios } from 'react-axios';
 
 const Home = () => {
 
     const axiosPublic = UseaxiosPublic()
+    const [datas, setdata] = useState([])
+    console.log(datas, 'datas');
     const handlesubmit = (e)=>{
         e.preventDefault()
         const form = e.target
@@ -12,7 +15,8 @@ const Home = () => {
         console.log(list,"list");
 
         const lists = { list}
-
+        
+ 
 
 
         axiosPublic.post("/v1/lists", lists)
@@ -43,11 +47,20 @@ const Home = () => {
         })
 
 
+        axiosPublic.get("/v1/listsInfo")
+        .then(res => 
+            {
+                setdata(res.data)
+
+            }
+            )
+
+
     }
     return (
-        <div>
+        <div >
             {/* input div */}
-            <div>
+            <div className='text-center'>
 
                 <form onSubmit={handlesubmit} action="">
                     <input type="text" placeholder="Type here" name='list' className="input input-bordered input-accent w-full max-w-xs" />
@@ -59,7 +72,30 @@ const Home = () => {
 
             </div>
             {/* list div */}
-            <div>
+            <div className=' flex h-[70vh] gap-10 my-6 '>
+
+                {/* to do  div */}
+
+                <div className='border-2 w-[50%] h-full '>
+                    {
+                        datas?.map((data)=>{ <p key={data._id} >ki</p> })
+                    }
+
+
+                </div>
+                {/* progress div */}
+
+                <div className='border-2 w-[50%] h-full '>
+                    hi
+
+
+                </div>
+                {/* completed div */}
+                <div  className='border-2 w-[50%] h-full '>
+                    hello
+
+
+                </div>
 
 
             </div>
