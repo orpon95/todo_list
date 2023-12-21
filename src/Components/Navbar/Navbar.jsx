@@ -1,6 +1,78 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { authContext } from '../AuthProvider/AuthProvide';
+import UseaxiosPublic from '../UseAxionPublic/UseaxiosPublic';
+import Swal from 'sweetalert2';
 
 const Navbar = () => {
+    const { user, logOut, googlesign } = useContext(authContext)
+    const nevigate = useNavigate()
+    const location = useLocation()
+    const [loggedinUser, setLoggedInUser] = useState('')
+    const axiospublic = UseaxiosPublic()
+
+    const handleSignOut = () => {
+        logOut()
+            .then(() => {
+                setLoggedInUser('')
+                const loggeduser = { email: user?.email }
+
+                // clear coki start
+                nevigate("/")
+
+
+
+            })
+            .catch(err => console.log(err))
+
+
+
+
+    }
+
+
+    // googlesign
+    const handleGoole = () => {
+        googlesign()
+            .then(result => {
+                setLoggedInUser(result.user)
+                const loggeduser = result.user
+
+                const UserInfo = {
+                    name: result.user?.displayName,
+                    email: result.user?.email
+                }
+
+                // user info save to dbs
+                axiospublic.post("/v1/users", UserInfo)
+                    .then(res => {
+                        console.log("inside update pro", res.data);
+                        if (res.data.insertedId) {
+                            console.log("after posting data userinfo", res.data);
+
+                        }
+                    })
+                nevigate(location?.state ? location.state : "/")
+                Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: 'sucessfully loggedin',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+
+                // start
+
+                // end
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+
+
+
+    }
     return (
         <div>
             <div className="drawer">
@@ -17,13 +89,34 @@ const Navbar = () => {
                         <div className="flex-none hidden lg:block">
                             <ul className="menu menu-horizontal">
                                 {/* Navbar menu content here */}
-                                <li><a>Navbar Item 1</a></li>
-                                <li><a>Navbar Item 2</a></li>
+                                <NavLink to={"/register"} ><li><a>register</a></li></NavLink>
+                                {
+                                    user ? <button onClick={handleSignOut} className='btn bg-cyan-300 mt-2 underline'> sign out</button> :
+
+                                        // <NavLink to={"/Login"}> <button className='btn'> Log in</button></NavLink>
+                                        <NavLink to={"/login"}><button className='btn bg-cyan-300 underline'> Log in</button></NavLink>
+
+
+                                }
+                                <NavLink to={"/"} ><li><a>Home</a></li></NavLink>
+                                <NavLink to={"/explore"} ><li><a>explore</a></li></NavLink>
+                                <button className='btn bg-cyan-300 underline' onClick={handleGoole}>Sign in with google</button>
+                                {
+                                    user && <div className='flex items-center text-center gap-3'>
+                                        <h1 className='underline p-2 rounded-lg font-bold'>
+                                            {user?.displayName}
+                                        </h1>
+                                        <p className='self-center'><img className='w-3/6 h-[40px] rounded-full ' src={user?.photoURL} alt="" /></p>
+
+
+                                    </div>
+                                }
+
+
                             </ul>
                         </div>
                     </div>
-                    {/* Page content here */}
-                    Content
+                    
                 </div>
                 <div className="drawer-side">
                     <label htmlFor="my-drawer-3" aria-label="close sidebar" className="drawer-overlay"></label>
