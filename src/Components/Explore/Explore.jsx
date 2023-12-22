@@ -129,7 +129,9 @@ const Explore = () => {
             
                 <div  >
                     {/* input div */}
-                    <div className='text-center'>
+                    <div className='text-center my-7 '>
+
+                        <h1 className='text-3xl font-black text-center my-6 text-white' >create your task</h1>
 
                         <form onSubmit={handlesubmit} className='flex flex-col justify-center items-center space-y-7 border-4 border-cyan-300 rounded-lg py-10' action="">
                             <input type="text" placeholder="Type Your title" name='title' className="input input-bordered input-accent w-full max-w-xs" />
@@ -148,7 +150,7 @@ const Explore = () => {
                         {/* to do  div */}
 
                         <div className=' grid grid-cols-1  border-2 w-full lg:w-[50%] h-max p-6 '>
-                            <h1 className='text-center text-2xl font-black my-8'> TO DO</h1>
+                            <h1 className='text-center text-2xl font-black my-8 text-white '> TO DO</h1>
                             {
                                 datas?.map((data) => <TodoRow key={data._id} data={data} refetch={refetch} ></TodoRow>)
                             }
@@ -158,7 +160,7 @@ const Explore = () => {
                         {/* progress div */}
 
                         <div ref={drop} className='border-2 w-full lg:w-[50%] h-screen  '  >
-                            <h1 className='text-center text-2xl font-black my-8'> On progress</h1>
+                            <h1 className='text-center text-2xl font-black my-8 text-white'> On progress</h1>
                             {
                                 progressdata?.map((data) => <TodoRow key={data._id} data={data} refetch={refetch} ></TodoRow> )
                             }
@@ -168,7 +170,7 @@ const Explore = () => {
                         </div>
                         {/* completed div */}
                         <div ref={drop} className='border-2 w-full lg:w-[50%] h-screen  '  >
-                            <h1 className='text-center text-2xl font-black my-8'> COmpleted</h1>
+                            <h1 className='text-center text-2xl font-black my-8 text-white '> COmpleted</h1>
                             {
                                 progressdata?.map((data) => <TodoRow key={data._id} data={data} refetch={refetch} ></TodoRow> )
                             }
