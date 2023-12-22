@@ -13,6 +13,9 @@ import AuthProvide from './Components/AuthProvider/AuthProvide.jsx';
 import Register from './Components/Register/Register.jsx';
 import Login from './Components/Login/Login.jsx';
 import Explore from './Components/Explore/Explore.jsx';
+import PrivateRoute from './Components/PrivateRoute/PrivateRoute.jsx';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend'
 const queryClient = new QueryClient()
 const router = createBrowserRouter([
   {
@@ -33,7 +36,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/explore",
-        element: <Explore></Explore>
+        element: <PrivateRoute><Explore></Explore></PrivateRoute>
       },
 
     ]
@@ -43,12 +46,15 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+    <DndProvider backend={HTML5Backend}>
     <QueryClientProvider client={queryClient}>
       <AuthProvide><RouterProvider router={router} /></AuthProvide>
       
 
 
     </QueryClientProvider>
+    </DndProvider>
+    
 
   </React.StrictMode>,
 )

@@ -6,11 +6,15 @@ import { useQuery } from '@tanstack/react-query';
 // import { withAxios } from 'react-axios';
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { DndProvider, useDrop } from 'react-dnd'
+import Progressdivinfo from './Progressdivinfo';
 
 
 const Explore = () => {
     const axiosPublic = UseaxiosPublic()
     const [listdata, setdata] = useState([])
+    const [progressdata, setprogressdata] = useState([])
+
+    
     // console.log(datas, 'datas');
     const handlesubmit = (e) => {
         // e.preventDefault()
@@ -18,9 +22,9 @@ const Explore = () => {
         const title = form.title.value
         const des = form.des.value
         const deadline = form.deadline.value
-        
 
-        const lists = { title,des, deadline}
+
+        const lists = { title, des, deadline }
         console.log(lists, "list");
 
 
@@ -94,62 +98,94 @@ const Explore = () => {
     //   const addotemTSection =(id)=>{
     //     console.log(id,"dropped id");
     //   }
+
+
+
+    // final dnd start
+    // dnd
+    const [{ isOver }, drop] = useDrop(
+        () => ({
+            accept: "task",
+            drop:(item)=> addimagetoProgress(item.id),
+            // item: { id: _id },
+            collect: (monitor) => ({
+                isOver: !!monitor.isOver()
+            })
+        }),
+        []
+    )
+
+    const addimagetoProgress = (id)=>{
+        console.log(id, "dropped id");
+        const filteredData = datas?.filter((data)=> data._id === id )
+        if(filteredData?.length > 0){
+            setprogressdata((board)=> [...board,filteredData[0]])
+        }
+
+    }
+    // final dnd end
     return (
         <>
-        <DndProvider backend={HTML5Backend}>
-            <div  >
-                {/* input div */}
-                <div className='text-center'>
+            
+                <div  >
+                    {/* input div */}
+                    <div className='text-center'>
 
-                    <form onSubmit={handlesubmit} className='flex flex-col justify-center items-center space-y-7 border-4 border-cyan-300 rounded-lg py-10' action="">
-                        <input type="text" placeholder="Type Your title" name='title' className="input input-bordered input-accent w-full max-w-xs" />
-                        <input type="text" placeholder="Type descripton" name='des' className="input input-bordered input-accent w-full max-w-xs" />
-                        <input type="text" placeholder="Type deadline" name='deadline' className="input input-bordered input-accent w-full max-w-xs" />
-                        <input type="submit" value="Create" className='btn bg-cyan-400' />
+                        <form onSubmit={handlesubmit} className='flex flex-col justify-center items-center space-y-7 border-4 border-cyan-300 rounded-lg py-10' action="">
+                            <input type="text" placeholder="Type Your title" name='title' className="input input-bordered input-accent w-full max-w-xs" />
+                            <input type="text" placeholder="Type descripton" name='des' className="input input-bordered input-accent w-full max-w-xs" />
+                            <input type="text" placeholder="Type deadline" name='deadline' className="input input-bordered input-accent w-full max-w-xs" />
+                            <input type="submit" value="Create" className='btn bg-cyan-400' />
 
-                    </form>
+                        </form>
 
 
+
+                    </div>
+                    {/* list div */}
+                    <div className=' flex flex-col lg:flex-row h-max gap-10 my-6 '>
+
+                        {/* to do  div */}
+
+                        <div className=' grid grid-cols-1  border-2 w-full lg:w-[50%] h-max p-6 '>
+                            <h1 className='text-center text-2xl font-black my-8'> TO DO</h1>
+                            {
+                                datas?.map((data) => <TodoRow key={data._id} data={data} refetch={refetch} ></TodoRow>)
+                            }
+
+
+                        </div>
+                        {/* progress div */}
+
+                        <div ref={drop} className='border-2 w-full lg:w-[50%] h-screen  '  >
+                            <h1 className='text-center text-2xl font-black my-8'> On progress</h1>
+                            {
+                                progressdata?.map((data) => <TodoRow key={data._id} data={data} refetch={refetch} ></TodoRow> )
+                            }
+
+
+
+                        </div>
+                        {/* completed div */}
+                        <div ref={drop} className='border-2 w-full lg:w-[50%] h-screen  '  >
+                            <h1 className='text-center text-2xl font-black my-8'> COmpleted</h1>
+                            {
+                                progressdata?.map((data) => <TodoRow key={data._id} data={data} refetch={refetch} ></TodoRow> )
+                            }
+
+
+
+                        </div>
+
+
+                    </div>
 
                 </div>
-                {/* list div */}
-                <div className=' flex h-[100vh] gap-10 my-6 '>
 
-                    {/* to do  div */}
-
-                    <div className='border-2 w-[50%] h-max p-6 '>
-                        <h1 className='text-center text-2xl font-black my-8'> TO DO</h1>
-                        {
-                            datas?.map((data) => <TodoRow key={data._id} data={data} refetch={refetch} ></TodoRow>)
-                        }
+           
 
 
-                    </div>
-                    {/* progress div */}
-
-                    <div className='border-2 w-[50%] h-full '>
-                    <h1 className='text-center text-2xl font-black my-8'> On progress</h1>
-                        
-
-
-                    </div>
-                    {/* completed div */}
-                    <div className='border-2 w-[50%] h-full '>
-                    <h1 className='text-center text-2xl font-black my-8'> completed</h1>
-                     
-
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-        </DndProvider>
-
-
-    </>
+        </>
     );
 };
 

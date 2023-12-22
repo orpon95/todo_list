@@ -85,22 +85,23 @@ const Navbar = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-6 h-6 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                             </label>
                         </div>
-                        <div className="flex-1 px-2 mx-2">Navbar Title</div>
+                        <div className="flex-1 px-2 mx-2">TO DO list</div>
                         <div className="flex-none hidden lg:block">
                             <ul className="menu menu-horizontal">
                                 {/* Navbar menu content here */}
+                                <NavLink to={"/"} ><li><a>Home</a></li></NavLink>
                                 <NavLink to={"/register"} ><li><a>register</a></li></NavLink>
                                 {
-                                    user ? <button onClick={handleSignOut} className='btn bg-cyan-300 mt-2 underline'> sign out</button> :
+                                    user ? <button onClick={handleSignOut} className='btn  mt-2 underline'> sign out</button> :
 
                                         // <NavLink to={"/Login"}> <button className='btn'> Log in</button></NavLink>
-                                        <NavLink to={"/login"}><button className='btn bg-cyan-300 underline'> Log in</button></NavLink>
+                                        <NavLink to={"/login"}><button className='btn  underline'> Log in</button></NavLink>
 
 
                                 }
-                                <NavLink to={"/"} ><li><a>Home</a></li></NavLink>
+
                                 <NavLink to={"/explore"} ><li><a>explore</a></li></NavLink>
-                                <button className='btn bg-cyan-300 underline' onClick={handleGoole}>Sign in with google</button>
+                                <button className='btn  underline' onClick={handleGoole}>Sign in with google</button>
                                 {
                                     user && <div className='flex items-center text-center gap-3'>
                                         <h1 className='underline p-2 rounded-lg font-bold'>
@@ -116,14 +117,26 @@ const Navbar = () => {
                             </ul>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div className="drawer-side">
                     <label htmlFor="my-drawer-3" aria-label="close sidebar" className="drawer-overlay"></label>
-                    <ul className="menu p-4 w-80 min-h-full bg-base-200">
+                    <ul className="menu p-4 w-80 min-h-full z-50 bg-base-200">
                         {/* Sidebar content here */}
-                        <li><a>Sidebar Item 1</a></li>
-                        <li><a>Sidebar Item 2</a></li>
+                        <NavLink to={"/"} ><li><a>Home</a></li></NavLink>
+                        <NavLink to={"/register"} ><li><a>register</a></li></NavLink>
+                        {
+                            user ? <button onClick={handleSignOut} className='btn mt-2 underline'> sign out</button> :
+
+                                // <NavLink to={"/Login"}> <button className='btn'> Log in</button></NavLink>
+                                <NavLink to={"/login"}><button className='btn  underline'> Log in</button></NavLink>
+
+
+                        }
+
+                        <NavLink to={"/explore"} ><li><a>explore</a></li></NavLink>
+                        <button className='btn  underline' onClick={handleGoole}>Sign in with google</button>
+
                     </ul>
                 </div>
             </div>

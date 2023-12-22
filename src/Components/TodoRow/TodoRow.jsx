@@ -22,6 +22,7 @@ const TodoRow = ({ data, refetch }) => {
         []
     )
     console.log(isDragging, "dragging");
+    // dnd end
 
     const handledelete = (id) => {
         axionpublic.delete(`/v1/lists/${id}`)

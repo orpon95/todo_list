@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Banner from './Banner';
+import Partner from './Partner';
 
 const Home = () => {
 
@@ -8,6 +9,7 @@ const Home = () => {
      <div>
 
         <Banner></Banner>
+        <Partner></Partner>
 
      </div>
 
